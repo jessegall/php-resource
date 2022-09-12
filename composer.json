@@ -1,0 +1,35 @@
+{
+    "name": "jessegall/resources",
+    "autoload": {
+        "psr-4": {
+            "JesseGall\\Resources\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "tests/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Jesse Gall",
+            "email": "jesse-gall@hotmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "jessegall/contains-data": "^1.1"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^6.1",
+        "phpunit/phpunit": "^9.5"
+    },
+    "scripts": {
+        "test": "@php -dxdebug.mode=coverage ./vendor/bin/phpunit --testdox --coverage-html=report --colors=auto",
+        "test-filter": "@test --filter="
+    },
+    "license": "MIT"
+}
