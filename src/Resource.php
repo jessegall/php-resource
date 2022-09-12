@@ -6,7 +6,9 @@ use JesseGall\ContainsData\ContainsData;
 
 class Resource
 {
-    use ContainsData;
+    use ContainsData {
+        ContainsData::set as __set;
+    }
 
     /**
      * @var array<string, Resource>
@@ -38,6 +40,20 @@ class Resource
     public static function collection(array $items = []): ResourceCollection
     {
         return ResourceCollection::create(static::class, $items);
+    }
+
+    /**
+     * Overwrites the set method from ContainsData trait to make it fluent
+     *
+     * @param array|string $key
+     * @param mixed|null $value
+     * @return Resource
+     */
+    public function set(array|string $key, mixed $value = null): static
+    {
+        $this->__set($key, $value);
+
+        return $this;
     }
 
     /**
