@@ -41,7 +41,7 @@ class ResourceTest extends TestCase
         $this->assertCount(3, $actual);
 
         foreach ($actual as $resource) {
-            $this->assertInstanceOf(TestResourceRelation::class, $resource);
+            $this->assertInstanceOf(TestResourceRelation::class, $resource, true);
         }
     }
 

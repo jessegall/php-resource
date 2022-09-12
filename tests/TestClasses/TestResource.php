@@ -32,7 +32,7 @@ class TestResource extends Resource
 
     public function getRelationList()
     {
-        return $this->relation('relationList', TestResourceRelation::class);
+        return $this->relation('relationList', TestResourceRelation::class, true);
     }
 
     public function getRelationMissing()
