@@ -136,6 +136,16 @@ class ResourceCollection implements \Iterator, \ArrayAccess
         unset($this->resources[$offset]);
     }
 
+    /**
+     * Returns the first resource in the collection
+     *
+     * @return T
+     */
+    public function first(): Resource
+    {
+        return $this->resources[0];
+    }
+
     # --- Getters and setters ---
 
     /**
