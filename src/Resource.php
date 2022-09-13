@@ -62,10 +62,10 @@ class Resource
      * @template T of \JesseGall\Resources\Resource
      * @param string $key
      * @param class-string<\JesseGall\Resources\Resource> $type
-     * @param bool $multiple
+     * @param bool $asCollection
      * @return T|ResourceCollection<T>|null
      */
-    public function relation(string $key, string $type, bool $multiple = false): Resource|ResourceCollection|null
+    public function relation(string $key, string $type, bool $asCollection = false): Resource|ResourceCollection|null
     {
         if ($this->relationIsLoaded($key)) {
             return $this->getRelation($key);
@@ -77,7 +77,7 @@ class Resource
             return null;
         }
 
-        $relation = $multiple ? $type::collection($data) : $type::create($data);
+        $relation = $asCollection ? $type::collection($data) : $type::create($data);
 
         $this->setRelation($key, $relation);
 

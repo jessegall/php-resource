@@ -34,7 +34,7 @@ class ResourceTest extends TestCase
         $this->assertInstanceOf(TestResourceRelation::class, $this->resource->getRelationSingle());
     }
 
-    public function test_map_to_resource_returns_an_array_of_expected_resources()
+    public function test_map_to_resource_returns_a_collection_of_expected_resources()
     {
         $actual = $this->resource->getRelationList();
 
