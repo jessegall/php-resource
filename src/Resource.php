@@ -4,7 +4,7 @@ namespace JesseGall\Resources;
 
 use JesseGall\ContainsData\ContainsData;
 
-class Resource
+class Resource implements \JsonSerializable
 {
     use ContainsData {
         ContainsData::set as __set;
@@ -118,4 +118,11 @@ class Resource
         return array_key_exists($key, $this->relations);
     }
 
+    /**
+     * @return mixed
+     */
+    public function jsonSerialize(): mixed
+    {
+        return $this->get();
+    }
 }

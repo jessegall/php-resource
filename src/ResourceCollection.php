@@ -7,7 +7,7 @@ use InvalidArgumentException;
 /**
  * @template T of \JesseGall\Resources\Resource
  */
-class ResourceCollection implements \Iterator, \ArrayAccess
+class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
 {
 
     /**
@@ -166,4 +166,8 @@ class ResourceCollection implements \Iterator, \ArrayAccess
         return $this->type;
     }
 
+    public function jsonSerialize(): mixed
+    {
+        return $this->resources;
+    }
 }
