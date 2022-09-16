@@ -146,6 +146,16 @@ class ResourceCollection implements \Iterator, \ArrayAccess
         return $this->resources[0];
     }
 
+    /**
+     * Returns all the resources in an array
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->resources;
+    }
+
     # --- Getters and setters ---
 
     /**

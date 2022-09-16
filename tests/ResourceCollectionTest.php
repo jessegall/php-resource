@@ -77,9 +77,7 @@ class ResourceCollectionTest extends TestCase
 
     public function test_can_set_with_index()
     {
-        $instance = new TestResource([
-            'property' => 'value'
-        ]);
+        $instance = new TestResource();
 
         $this->collection[0] = $instance;
 
