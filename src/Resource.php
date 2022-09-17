@@ -45,11 +45,11 @@ class Resource implements \JsonSerializable
     /**
      * Overwrites the set method from ContainsData trait to make it fluent
      *
-     * @param array|string $key
+     * @param string $key
      * @param mixed|null $value
      * @return Resource
      */
-    public function set(array|string $key, mixed $value = null): static
+    public function set(string $key, mixed $value = null): static
     {
         $this->__set($key, $value);
 
