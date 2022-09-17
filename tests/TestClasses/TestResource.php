@@ -40,4 +40,9 @@ class TestResource extends Resource
         return $this->relation('relationMissing', TestResourceRelation::class);
     }
 
+    public function getContainer(): array
+    {
+        return $this->__container;
+    }
+
 }

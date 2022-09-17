@@ -32,6 +32,21 @@ class Resource implements \JsonSerializable
     }
 
     /**
+     * Creates a new resource with reference to a container
+     *
+     * @param array $data
+     * @return static
+     */
+    public static function createWithReference(array &$data = []): static
+    {
+        $resource = new static;
+
+        $resource->container($data);
+
+        return $resource;
+    }
+
+    /**
      * Returns a new collection for the resource type
      *
      * @param array $items
@@ -71,13 +86,13 @@ class Resource implements \JsonSerializable
             return $this->getRelation($key);
         }
 
-        $data = $this->get($key);
+        $data = &$this->getAsReference($key);
 
         if (is_null($data)) {
             return null;
         }
 
-        $relation = $asCollection ? $type::collection($data) : $type::create($data);
+        $relation = $asCollection ? $type::collection($data) : $type::createWithReference($data);
 
         $this->setRelation($key, $relation);
 

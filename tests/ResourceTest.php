@@ -17,6 +17,16 @@ class ResourceTest extends TestCase
         $this->resource = new TestResource();
     }
 
+    public function test_can_set_value()
+    {
+        $this->resource->set('nested.property', 'nested value');
+
+        $this->assertEquals(
+            'nested value',
+            $this->resource->getContainer()['nested']['property']
+        );
+    }
+
     public function test_can_be_created_with_static_method()
     {
         $this->assertInstanceOf(TestResource::class, TestResource::create());
@@ -71,6 +81,24 @@ class ResourceTest extends TestCase
         $this->resource->setRelation('relationSingle', $expected = new TestResourceRelation());
 
         $this->assertEquals($expected, $this->resource->getRelation('relationSingle'));
+    }
+
+    public function test_setting_value_in_relation_also_affects_the_parent()
+    {
+        $relation = $this->resource->getRelationSingle();
+
+        $relation->set('property', $expected = 'new value');
+
+        $this->assertEquals($expected, $this->resource->get('relationSingle.property'));
+    }
+
+    public function test_setting_value_in_parent_also_affects_the_relation()
+    {
+        $relation = $this->resource->getRelationSingle();
+
+        $this->resource->set('relationSingle.property', $expected = 'new value');
+
+        $this->assertEquals($expected, $relation->get('property'));
     }
 
 }

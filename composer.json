@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": ">=8.1",
-        "jessegall/contains-data": "^0.0.2"
+        "jessegall/contains-data": "dev-main"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.1",
