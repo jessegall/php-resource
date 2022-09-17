@@ -22,7 +22,7 @@ class ResourceCollectionTest extends TestCase
             new TestResource(),
             new TestResource(),
         ]) extends ResourceCollection {
-            public function getResource(): array
+            public function getResources(): array
             {
                 return $this->resources;
             }
@@ -65,7 +65,7 @@ class ResourceCollectionTest extends TestCase
         unset($this->collection[1]);
         unset($this->collection[2]);
 
-        $this->assertCount(0, $this->collection->getResource());
+        $this->assertCount(0, $this->collection->getResources());
     }
 
     public function test_can_isset_with_index()
@@ -81,7 +81,7 @@ class ResourceCollectionTest extends TestCase
 
         $this->collection[0] = $instance;
 
-        $this->assertEquals($instance, $this->collection->getResource()[0]);
+        $this->assertEquals($instance, $this->collection->getResources()[0]);
     }
 
     public function test_will_throw_exception_when_invalid_type_is_set()
@@ -89,6 +89,27 @@ class ResourceCollectionTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $this->collection[0] = new Resource();
+    }
+
+    public function test_first_returns_first_resource()
+    {
+        $this->assertEquals($this->collection->getResources()[0], $this->collection->first());
+    }
+
+    public function test_all_returns_all_resources()
+    {
+        $this->assertEquals($this->collection->getResources(), $this->collection->all());
+    }
+
+    public function test_is_json_serializable()
+    {
+        $serialized = json_encode($this->collection);
+
+        $deserialized = json_decode($serialized, true);
+
+        $expected = array_map(fn(Resource $resource) => $resource->container(), $this->collection->getResources());
+
+        $this->assertEquals($expected, $deserialized);
     }
 
 

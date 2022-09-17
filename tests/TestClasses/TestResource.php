@@ -3,6 +3,7 @@
 namespace Test\TestClasses;
 
 use JesseGall\Resources\Resource;
+use JesseGall\Resources\ResourceCollection;
 
 class TestResource extends Resource
 {
@@ -25,12 +26,12 @@ class TestResource extends Resource
         ]);
     }
 
-    public function getRelationSingle()
+    public function getRelationSingle(): TestResourceRelation
     {
         return $this->relation('relationSingle', TestResourceRelation::class);
     }
 
-    public function getRelationList()
+    public function getRelationList(): ResourceCollection
     {
         return $this->relation('relationList', TestResourceRelation::class, true);
     }

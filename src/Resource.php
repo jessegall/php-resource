@@ -3,6 +3,7 @@
 namespace JesseGall\Resources;
 
 use JesseGall\ContainsData\ContainsData;
+use JesseGall\ContainsData\ReferenceMissingException;
 
 class Resource implements \JsonSerializable
 {
@@ -37,7 +38,7 @@ class Resource implements \JsonSerializable
      * @param array $data
      * @return static
      */
-    public static function createWithReference(array &$data = []): static
+    public static function createFromReference(array &$data = []): static
     {
         $resource = new static;
 
@@ -52,7 +53,7 @@ class Resource implements \JsonSerializable
      * @param array $items
      * @return ResourceCollection<static>
      */
-    public static function collection(array $items = []): ResourceCollection
+    public static function collection(array &$items = []): ResourceCollection
     {
         return ResourceCollection::create(static::class, $items);
     }
@@ -79,6 +80,7 @@ class Resource implements \JsonSerializable
      * @param class-string<\JesseGall\Resources\Resource> $type
      * @param bool $asCollection
      * @return T|ResourceCollection<T>|null
+     * @throws ReferenceMissingException
      */
     public function relation(string $key, string $type, bool $asCollection = false): Resource|ResourceCollection|null
     {
@@ -92,7 +94,7 @@ class Resource implements \JsonSerializable
             return null;
         }
 
-        $relation = $asCollection ? $type::collection($data) : $type::createWithReference($data);
+        $relation = $asCollection ? $type::collection($data) : $type::createFromReference($data);
 
         $this->setRelation($key, $relation);
 
@@ -134,10 +136,20 @@ class Resource implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * Returns the array representation of the resource
+     *
+     * @return array
      */
-    public function jsonSerialize(): mixed
+    public function toArray(): array
     {
-        return $this->get();
+        return $this->container();
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

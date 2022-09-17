@@ -2,6 +2,7 @@
 
 namespace JesseGall\Resources;
 
+use Closure;
 use InvalidArgumentException;
 
 /**
@@ -40,7 +41,7 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
         }
 
         $this->type = $type;
-        $this->resources = $resources;
+        $this->resources = &$resources;
     }
 
     /**
@@ -50,9 +51,15 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
      * @param array $items
      * @return static
      */
-    public static function create(string $type, array $items): static
+    public static function create(string $type, array &$items): static
     {
-        return new static($type, array_map(fn($data) => $type::create($data), $items));
+        $resources = [];
+
+        foreach ($items as &$item) {
+            $resources[] = $type::createFromReference($item);
+        }
+
+        return new static($type, $resources);
     }
 
     /**
@@ -156,7 +163,34 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
         return $this->resources;
     }
 
-    # --- Getters and setters ---
+    /**
+     * Map each resource to the result of the callback
+     *
+     * @param Closure $callback
+     * @return array
+     */
+    public function map(Closure $callback): array
+    {
+        return array_map($callback, $this->resources);
+    }
+
+    /**
+     * Returns the array representation of the resource
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->map(fn(Resource $resource) => $resource->toArray());
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 
     /**
      * @return string
@@ -166,8 +200,4 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
         return $this->type;
     }
 
-    public function jsonSerialize(): mixed
-    {
-        return $this->resources;
-    }
 }
