@@ -17,7 +17,7 @@ class Resource implements \JsonSerializable
 
     public function __construct(array $data = [])
     {
-        $this->set($data);
+        $this->container($data);
     }
 
     /**
