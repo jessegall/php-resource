@@ -1,12 +1,12 @@
 <?php
 
-namespace Test;
+namespace Tests;
 
 use InvalidArgumentException;
 use JesseGall\Resources\Resource;
 use JesseGall\Resources\ResourceCollection;
 use PHPUnit\Framework\TestCase;
-use Test\TestClasses\TestResource;
+use Tests\TestClasses\TestResource;
 
 class ResourceCollectionTest extends TestCase
 {

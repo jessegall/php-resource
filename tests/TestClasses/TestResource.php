@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\TestClasses;
+namespace Tests\TestClasses;
 
 use JesseGall\Resources\Resource;
 use JesseGall\Resources\ResourceCollection;

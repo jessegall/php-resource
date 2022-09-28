@@ -51,7 +51,7 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
      * @param array $items
      * @return static
      */
-    public static function create(string $type, array &$items): static
+    public static function new(string $type, array &$items): static
     {
         $resources = [];
 

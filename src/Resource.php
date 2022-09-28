@@ -27,7 +27,7 @@ class Resource implements \JsonSerializable
      * @param array $data
      * @return static
      */
-    public static function create(array $data = []): static
+    public static function new(array $data = []): static
     {
         return new static($data);
     }
@@ -55,7 +55,7 @@ class Resource implements \JsonSerializable
      */
     public static function collection(array &$items = []): ResourceCollection
     {
-        return ResourceCollection::create(static::class, $items);
+        return ResourceCollection::new(static::class, $items);
     }
 
     /**

@@ -7,10 +7,10 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Test\\": "tests/"
+            "Tests\\": "tests/"
         },
         "files": [
-            "src/helpers.php"
+            "tests/helpers.dev.php"
         ]
     },
     "authors": [

@@ -1,12 +1,11 @@
 <?php
 
-namespace Test;
+namespace Tests;
 
-use JesseGall\Resources\Resource;
 use JesseGall\Resources\ResourceCollection;
 use PHPUnit\Framework\TestCase;
-use Test\TestClasses\TestResource;
-use Test\TestClasses\TestResourceRelation;
+use Tests\TestClasses\TestResource;
+use Tests\TestClasses\TestResourceRelation;
 
 class ResourceTest extends TestCase
 {
@@ -30,7 +29,7 @@ class ResourceTest extends TestCase
 
     public function test_can_be_created_with_static_method()
     {
-        $this->assertInstanceOf(TestResource::class, TestResource::create());
+        $this->assertInstanceOf(TestResource::class, TestResource::new());
     }
 
     public function test_can_create_a_collection_with_static_method()
