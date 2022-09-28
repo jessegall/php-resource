@@ -17,9 +17,9 @@ interface RemoteResource
      * Find a remote resource by key
      *
      * @param string|int $key
-     * @return static
+     * @return static|null
      */
-    public static function find(string|int $key): static;
+    public static function find(string|int $key): ?static;
 
     /**
      * Create a remote resource
