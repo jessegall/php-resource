@@ -2,7 +2,7 @@
 
 namespace JesseGall\Resources;
 
-interface isRemoteResource
+interface RemoteResource
 {
 
     /**
