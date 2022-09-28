@@ -2,7 +2,7 @@
 
 namespace JesseGall\Resources;
 
-interface RemoteResource
+interface isRemoteResource
 {
 
     /**
@@ -14,12 +14,12 @@ interface RemoteResource
     public static function all(array $params = []): ResourceCollection;
 
     /**
-     * Find a remote resource by id
+     * Find a remote resource by key
      *
-     * @param string|int $id
+     * @param string|int $key
      * @return static
      */
-    public static function find(string|int $id): static;
+    public static function find(string|int $key): static;
 
     /**
      * Create a remote resource
