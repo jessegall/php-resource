@@ -112,5 +112,59 @@ class ResourceCollectionTest extends TestCase
         $this->assertEquals($expected, $deserialized);
     }
 
+    public function test_given_numbers_when_sort_then_sorted()
+    {
+        $unsorted = array_map(fn(int $i) => new Resource(['property' => $i]), [0, 2, 4, 3, 1]);
+
+        $collection = new ResourceCollection(Resource::class, $unsorted);
+
+        $sorted = $collection->sort('property');
+
+        foreach ($sorted->all() as $index => $resource) {
+            self::assertEquals($index, $resource->get('property'));
+        }
+    }
+
+    public function test_given_strings_when_sort_then_sorted()
+    {
+        $unsorted = array_map(fn(string $i) => new Resource(['property' => $i]), ['aa', 'cc', 'ff', 'dd', 'bb']);
+
+        $collection = new ResourceCollection(Resource::class, $unsorted);
+
+        $sorted = $collection->sort('property');
+
+        $expected = ['aa', 'bb', 'cc', 'dd', 'ff'];
+
+        foreach ($sorted->all() as $index => $resource) {
+            self::assertEquals($expected[$index], $resource->get('property'));
+        }
+    }
+
+    public function test_given_direction_desc_when_sort_then_sorted_descending()
+    {
+        $unsorted = array_map(fn(int $i) => new Resource(['property' => $i]), [0, 2, 4, 3, 1]);
+
+        $collection = new ResourceCollection(Resource::class, $unsorted);
+
+        $sorted = $collection->sort('property', 'desc');
+
+        foreach ($sorted->all() as $index => $resource) {
+            self::assertEquals(4 - $index, $resource->get('property'));
+        }
+    }
+
+    public function test_given_closure_when_sort_then_sorted()
+    {
+        $unsorted = array_map(fn(int $i) => new Resource(['property' => $i]), [0, 2, 4, 3, 1]);
+
+        $collection = new ResourceCollection(Resource::class, $unsorted);
+
+        $sorted = $collection->sort(fn(Resource $a, Resource $b) => $a->get('property') - $b->get('property'));
+
+        foreach ($sorted->all() as $index => $resource) {
+            self::assertEquals($index, $resource->get('property'));
+        }
+    }
+
 
 }

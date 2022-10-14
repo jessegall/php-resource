@@ -156,7 +156,7 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
     /**
      * Returns all the resources in an array
      *
-     * @return array
+     * @return T[]
      */
     public function all(): array
     {
@@ -172,6 +172,33 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
     public function map(Closure $callback): array
     {
         return array_map($callback, $this->resources);
+    }
+
+    /**
+     * Sort the collection and get a new sorted collection instance
+     *
+     * @param string|Closure $property
+     * @param string $direction
+     * @return $this
+     */
+    public function sort(string|Closure $property, string $direction = 'asc'): static
+    {
+        $resources = $this->resources;
+
+        if (is_callable($property)) {
+            usort($resources, $property);
+        } else {
+            usort($resources, function (Resource $a, Resource $b) use ($property, $direction, $resources) {
+                $a = $a->get($property);
+                $b = $b->get($property);
+                return match ($direction) {
+                    'asc' => strnatcmp($a, $b),
+                    'desc' => strnatcmp($b, $a),
+                };
+            });
+        }
+
+        return new static($this->type, $resources);
     }
 
     /**
