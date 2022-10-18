@@ -136,7 +136,7 @@ class ResourceCollectionTest extends TestCase
         $expected = ['aa', 'bb', 'cc', 'dd', 'ff'];
 
         foreach ($sorted->all() as $index => $resource) {
-            self::assertEquals($expected[$index], $resource->get('property'));
+            $this->assertEquals($expected[$index], $resource->get('property'));
         }
     }
 
@@ -149,7 +149,7 @@ class ResourceCollectionTest extends TestCase
         $sorted = $collection->sort('property', 'desc');
 
         foreach ($sorted->all() as $index => $resource) {
-            self::assertEquals(4 - $index, $resource->get('property'));
+            $this->assertEquals(4 - $index, $resource->get('property'));
         }
     }
 
@@ -162,8 +162,29 @@ class ResourceCollectionTest extends TestCase
         $sorted = $collection->sort(fn(Resource $a, Resource $b) => $a->get('property') - $b->get('property'));
 
         foreach ($sorted->all() as $index => $resource) {
-            self::assertEquals($index, $resource->get('property'));
+            $this->assertEquals($index, $resource->get('property'));
         }
+    }
+
+    public function test_when_filter_then_new_collection_returned()
+    {
+        $original = new ResourceCollection(Resource::class, []);
+
+        $new = $original->filter(fn() => true);
+
+        $this->assertNotSame($original, $new);
+    }
+
+    public function test_when_filter_then_filtered()
+    {
+        $unfiltered = new ResourceCollection(
+            Resource::class,
+            array_map(fn(int $i) => new Resource(['property' => $i]), [0, 1, 2, 3, 4])
+        );
+
+        $filtered = $unfiltered->filter(fn(Resource $resource) => ($resource->get('property') % 2) == 0);
+
+        $this->assertCount(3, $filtered);
     }
 
 

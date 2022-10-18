@@ -8,7 +8,7 @@ use InvalidArgumentException;
 /**
  * @template T of \JesseGall\Resources\Resource
  */
-class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
+class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable, \Countable
 {
 
     /**
@@ -175,6 +175,19 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Filter the collection.
+     *
+     * @param Closure $closure
+     * @return $this
+     */
+    public function filter(Closure $closure): static
+    {
+        $resources = array_filter($this->resources, $closure);
+
+        return new static($this->type, $resources);
+    }
+
+    /**
      * Sort the collection and get a new sorted collection instance
      *
      * @param string|Closure $property
@@ -209,6 +222,16 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable
     public function toArray(): array
     {
         return $this->map(fn(Resource $resource) => $resource->toArray());
+    }
+
+    /**
+     * Get the count of resources in the collection
+     *
+     * @return int
+     */
+    public function count(): int
+    {
+        return count($this->resources);
     }
 
     /**
