@@ -146,11 +146,11 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable, 
     /**
      * Returns the first resource in the collection
      *
-     * @return T
+     * @return T|null
      */
-    public function first(): Resource
+    public function first(): ?Resource
     {
-        return $this->resources[0];
+        return $this->get(0);
     }
 
     /**
@@ -161,6 +161,15 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable, 
     public function all(): array
     {
         return $this->resources;
+    }
+
+    /**
+     * @param int $index
+     * @return T|null
+     */
+    public function get(int $index): ?Resource
+    {
+        return $this->resources[$index] ?? null;
     }
 
     /**

@@ -12,15 +12,18 @@ class ResourceCollectionTest extends TestCase
 {
 
     private ResourceCollection $collection;
+    private Resource $one;
+    private Resource $two;
+    private Resource $three;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->collection = new class(TestResource::class, [
-            new TestResource(),
-            new TestResource(),
-            new TestResource(),
+            $this->one = new TestResource(),
+            $this->two = new TestResource(),
+            $this->three = new TestResource(),
         ]) extends ResourceCollection {
             public function getResources(): array
             {
@@ -187,5 +190,35 @@ class ResourceCollectionTest extends TestCase
         $this->assertCount(3, $filtered);
     }
 
+    public function test_when_get_then_correct_resource()
+    {
+        $this->assertSame($this->one, $this->collection->get(0));
+        $this->assertSame($this->two, $this->collection->get(1));
+        $this->assertSame($this->three, $this->collection->get(2));
+    }
+
+    public function test_given_index_with_no_resource_when_get_then_null()
+    {
+        $this->assertNull($this->collection->get(99));
+    }
+
+    public function test_can_loop_over_collection()
+    {
+        foreach ($this->collection as $key => $value) {
+            switch ($key) {
+                case 0:
+                    $this->assertSame($this->one, $value);
+                    break;
+
+                case 1:
+                    $this->assertSame($this->two, $value);
+                    break;
+
+                case 2:
+                    $this->assertSame($this->three, $value);
+                    break;
+            }
+        }
+    }
 
 }
