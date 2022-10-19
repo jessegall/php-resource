@@ -61,7 +61,8 @@ class Resource implements \JsonSerializable
     }
 
     /**
-     * Overwrites the set method from ContainsData trait to make it fluent
+     * Overwrites the set method from ContainsData trait.
+     * When the given value is a resource, set the container of the resource as data and load the relation
      *
      * @param string $key
      * @param mixed|null $value
@@ -69,7 +70,13 @@ class Resource implements \JsonSerializable
      */
     public function set(string $key, mixed $value = null): static
     {
-        $this->__set($key, $value);
+        if ($value instanceof Resource) {
+            $this->setAsReference($key, $value->container());
+
+            $this->setRelation($key, $value);
+        } else {
+            $this->__set($key, $value);
+        }
 
         return $this;
     }

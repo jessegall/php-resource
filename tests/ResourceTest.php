@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use JesseGall\Resources\Resource;
 use JesseGall\Resources\ResourceCollection;
 use PHPUnit\Framework\TestCase;
 use Tests\TestClasses\TestResource;
@@ -69,9 +70,9 @@ class ResourceTest extends TestCase
         $resource->method('getRelation')->willReturn(new TestResourceTwo());
 
         $resource->expects($this->once())
-            ->method('getRelation')
-            ->with('relationSingle')
-            ->willReturn(new TestResourceTwo());
+                 ->method('getRelation')
+                 ->with('relationSingle')
+                 ->willReturn(new TestResourceTwo());
 
         $resource->getRelationSingle();
     }
@@ -123,5 +124,37 @@ class ResourceTest extends TestCase
 
         $this->assertEquals($this->resource->container(), $deserialized);
     }
+
+    public function test_given_resource_when_set_then_container_of_resource_is_set()
+    {
+        $resource = new class extends Resource {
+            public function getContainer(): array
+            {
+                return $this->__container;
+            }
+        };
+
+        $resource->set('relation', new Resource([
+            'property' => 'value'
+        ]));
+
+        $actual = $resource->getContainer()['relation'];
+
+        $this->assertIsArray($actual);
+
+        $this->assertArrayHasKey('property', $actual);
+
+        $this->assertEquals('value', $actual['property']);
+    }
+
+    public function test_given_resource_when_set_then_relation_is_set()
+    {
+        $resource = new Resource();
+
+        $resource->set('relation', new Resource());
+
+        $this->assertTrue($resource->relationIsLoaded('relation'));
+    }
+
 
 }
