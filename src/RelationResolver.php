@@ -83,7 +83,7 @@ class RelationResolver
             if ($this->isResourceType($type)) {
                 return $type->getName();
             } else if ($this->isResourceCollectionType($type)) {
-                $collection = $method->invoke($resource);
+                $collection = $method->invoke(clone $resource);
 
                 return $collection->getType();
             }
