@@ -12,6 +12,8 @@ class Resource implements \JsonSerializable
     }
 
     /**
+     * The loaded relations of the resource
+     *
      * @var array<string, Resource>
      */
     protected array $relations = [];

@@ -26,19 +26,29 @@ class TestResource extends Resource
         ]);
     }
 
-    public function getRelationSingle(): TestResourceRelation
+    public function getRelationSingle(): TestResourceTwo
     {
-        return $this->relation('relationSingle', TestResourceRelation::class);
+        return $this->relation('relationSingle', TestResourceTwo::class);
     }
 
     public function getRelationList(): ResourceCollection
     {
-        return $this->relation('relationList', TestResourceRelation::class, true);
+        return $this->relation('relationList', TestResourceTwo::class, true);
     }
 
-    public function getRelationMissing()
+    public function getRelationMissing(): ?TestResourceTwo
     {
-        return $this->relation('relationMissing', TestResourceRelation::class);
+        return $this->relation('relationMissing', TestResourceTwo::class);
+    }
+
+    public function getTestResourceTwo(): ?TestResourceTwo
+    {
+        return $this->relation('resourceTwo', TestResourceTwo::class);
+    }
+
+    public function getTestResourceThree(): ?TestResourceThree
+    {
+        return $this->relation('resourceTwo', TestResourceThree::class);
     }
 
     public function getContainer(): array

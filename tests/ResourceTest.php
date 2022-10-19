@@ -5,7 +5,7 @@ namespace Tests;
 use JesseGall\Resources\ResourceCollection;
 use PHPUnit\Framework\TestCase;
 use Tests\TestClasses\TestResource;
-use Tests\TestClasses\TestResourceRelation;
+use Tests\TestClasses\TestResourceTwo;
 
 class ResourceTest extends TestCase
 {
@@ -41,7 +41,7 @@ class ResourceTest extends TestCase
 
     public function test_map_to_resource_creates_expected_resource()
     {
-        $this->assertInstanceOf(TestResourceRelation::class, $this->resource->getRelationSingle());
+        $this->assertInstanceOf(TestResourceTwo::class, $this->resource->getRelationSingle());
     }
 
     public function test_map_to_resource_returns_a_collection_of_expected_resources()
@@ -51,7 +51,7 @@ class ResourceTest extends TestCase
         $this->assertCount(3, $actual);
 
         foreach ($actual as $resource) {
-            $this->assertInstanceOf(TestResourceRelation::class, $resource, true);
+            $this->assertInstanceOf(TestResourceTwo::class, $resource, true);
         }
     }
 
@@ -64,21 +64,21 @@ class ResourceTest extends TestCase
     {
         $resource = $this->createPartialMock(TestResource::class, ['getRelation']);
 
-        $resource->setRelation('relationSingle', new TestResourceRelation());
+        $resource->setRelation('relationSingle', new TestResourceTwo());
 
-        $resource->method('getRelation')->willReturn(new TestResourceRelation());
+        $resource->method('getRelation')->willReturn(new TestResourceTwo());
 
         $resource->expects($this->once())
             ->method('getRelation')
             ->with('relationSingle')
-            ->willReturn(new TestResourceRelation());
+            ->willReturn(new TestResourceTwo());
 
         $resource->getRelationSingle();
     }
 
     public function test_get_relation_returns_expected_relation()
     {
-        $this->resource->setRelation('relationSingle', $expected = new TestResourceRelation());
+        $this->resource->setRelation('relationSingle', $expected = new TestResourceTwo());
 
         $this->assertEquals($expected, $this->resource->getRelation('relationSingle'));
     }
