@@ -228,8 +228,10 @@ class ResourceCollectionTest extends TestCase
         $this->assertCount(0, $collection);
 
         $collection->add(new Resource());
+        $collection->add(new Resource());
+        $collection->add(new Resource());
 
-        $this->assertCount(1, $collection);
+        $this->assertCount(3, $collection);
     }
 
 }

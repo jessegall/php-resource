@@ -149,9 +149,13 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable, 
      * @param Resource $resource
      * @return void
      */
-    public function add(Resource $resource)
+    public function add(Resource $resource): void
     {
-        $this[] = $resource;
+        if (! ($resource instanceof $this->type)) {
+            throw new InvalidArgumentException("Value should be an instance of $this->type");
+        }
+
+        $this->resources[] = $resource;
     }
 
     /**
