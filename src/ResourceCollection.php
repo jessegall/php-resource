@@ -32,7 +32,7 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable, 
      * @param class-string<T> $type
      * @param T[] $resources
      */
-    public function __construct(string $type, array $resources = [])
+    public function __construct(string $type = Resource::class, array $resources = [])
     {
         foreach ($resources as $resource) {
             if (! ($resource instanceof $type)) {
@@ -141,6 +141,17 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable, 
     public function offsetUnset(mixed $offset): void
     {
         unset($this->resources[$offset]);
+    }
+
+    /**
+     * Add a resource to the collection
+     *
+     * @param Resource $resource
+     * @return void
+     */
+    public function add(Resource $resource)
+    {
+        $this[] = $resource;
     }
 
     /**

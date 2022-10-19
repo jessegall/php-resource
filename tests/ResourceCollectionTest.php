@@ -221,4 +221,15 @@ class ResourceCollectionTest extends TestCase
         }
     }
 
+    public function test_when_add_then_resource_added()
+    {
+        $collection = new ResourceCollection();
+
+        $this->assertCount(0, $collection);
+
+        $collection->add(new Resource());
+
+        $this->assertCount(1, $collection);
+    }
+
 }

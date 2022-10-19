@@ -12,14 +12,14 @@ class RelationResolver
 {
 
     /**
-     * Get the relations from a resource by checking each method.
+     * Get the methods that return a relation
      *
      * Returns an array where the keys are the method, and the value the relation resource type.
      *
      * @param Resource $resource
      * @return array
      */
-    public function resolveRelations(Resource $resource): array
+    public function resolveRelationMethods(Resource $resource): array
     {
         $resolved = [];
 
@@ -38,6 +38,13 @@ class RelationResolver
         }
 
         return $resolved;
+    }
+
+    public function resolveRelations(Resource $resource): array
+    {
+        $methods = $this->resolveRelationMethods($resource);
+
+        return array_values(array_unique($methods));
     }
 
     /**
