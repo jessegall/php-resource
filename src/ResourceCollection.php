@@ -206,9 +206,20 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable, 
      */
     public function filter(Closure $closure): static
     {
-        $resources = array_filter($this->resources, $closure);
+        $resources = array_values(array_filter($this->resources, $closure));
 
         return new static($this->type, $resources);
+    }
+
+    /**
+     * Find a resource
+     * s
+     * @param Closure $closure
+     * @return Resource|null
+     */
+    public function find(Closure $closure): ?Resource
+    {
+        return $this->filter($closure)->first();
     }
 
     /**

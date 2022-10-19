@@ -234,4 +234,17 @@ class ResourceCollectionTest extends TestCase
         $this->assertCount(3, $collection);
     }
 
+    public function test_when_find_then_correct_result_returned()
+    {
+        $collection = new ResourceCollection(resources: [
+            new Resource(['property' => 1]),
+            $expected = new Resource(['property' => 2]),
+            new Resource(['property' => 3]),
+        ]);
+
+        $actual = $collection->find(fn(Resource $resource) => $resource->get('property') === 2);
+
+        $this->assertEquals($expected, $actual);
+    }
+
 }
