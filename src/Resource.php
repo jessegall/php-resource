@@ -110,7 +110,6 @@ class Resource implements \JsonSerializable
      * @param class-string<\JesseGall\Resources\Resource> $type
      * @param bool $asCollection
      * @return T|ResourceCollection<T>|null
-     * @throws ReferenceMissingException
      */
     public function relation(string $key, string $type, bool $asCollection = false): Resource|ResourceCollection|null
     {
@@ -118,7 +117,11 @@ class Resource implements \JsonSerializable
             return $this->getRelation($key);
         }
 
-        $data = &$this->getAsReference($key);
+        try {
+            $data = &$this->getAsReference($key);
+        } catch (ReferenceMissingException) {
+            $data = $asCollection ? [] : null;
+        }
 
         if (is_null($data)) {
             return null;
