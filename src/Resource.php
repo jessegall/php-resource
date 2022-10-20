@@ -74,6 +74,16 @@ class Resource implements \JsonSerializable
             $this->setAsReference($key, $value->container());
 
             $this->setRelation($key, $value);
+        } else if ($value instanceof ResourceCollection) {
+            $data = [];
+
+            foreach ($value->all() as $resource) {
+                $data[] = &$resource->container();
+            }
+
+            $this->setAsReference($key, $data);
+
+            $this->setRelation($key, $value);
         } else {
             $this->__set($key, $value);
         }

@@ -156,5 +156,36 @@ class ResourceTest extends TestCase
         $this->assertTrue($resource->relationIsLoaded('relation'));
     }
 
+    public function test_given_resource_collection_when_set_then_containers_of_resources_are_set()
+    {
+        $resource = new class extends Resource {
+            public function getContainer(): array
+            {
+                return $this->__container;
+            }
+        };
+
+        $collection = new ResourceCollection(
+            resources: array_map(fn(array $data) => new Resource($data), [
+                ['property' => 'value'],
+                ['property' => 'value'],
+                ['property' => 'value'],
+            ])
+        );
+
+        $resource->set('relation', $collection);
+
+        $actual = $resource->getContainer()['relation'];
+
+        $this->assertIsArray($actual);
+
+        $this->assertCount(3, $actual);
+
+        $this->assertEquals([
+            ['property' => 'value'],
+            ['property' => 'value'],
+            ['property' => 'value'],
+        ], $actual);
+    }
 
 }
