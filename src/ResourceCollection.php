@@ -48,15 +48,19 @@ class ResourceCollection implements \Iterator, \ArrayAccess, \JsonSerializable, 
      * Creates a new resource collection
      *
      * @param class-string<\JesseGall\Resources\Resource> $type
-     * @param array $items
+     * @param array $data
      * @return static
      */
-    public static function new(string $type, array &$items): static
+    public static function new(string $type, array &$data): static
     {
         $resources = [];
 
-        foreach ($items as &$item) {
-            $resources[] = $type::createFromReference($item);
+        foreach ($data as &$entry) {
+            if ($entry instanceof Resource) {
+                $resources[] = $entry;
+            } else {
+                $resources[] = $type::createFromReference($entry);
+            }
         }
 
         return new static($type, $resources);

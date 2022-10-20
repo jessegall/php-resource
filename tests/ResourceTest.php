@@ -35,7 +35,7 @@ class ResourceTest extends TestCase
 
     public function test_can_create_a_collection_with_static_method()
     {
-        $this->assertInstanceOf(ResourceCollection::class, $collection = TestResource::collection());
+        $this->assertInstanceOf(ResourceCollection::class, $collection = TestResource::collectionFromReference());
 
         $this->assertEquals(TestResource::class, $collection->getType());
     }

@@ -247,4 +247,18 @@ class ResourceCollectionTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_given_array_with_mixed_data_when_new_then_correct_collection_returned()
+    {
+        $data = [
+            ['property' => 'value'],
+            ['property' => 'value'],
+            new Resource(['property' => 'value']),
+            new Resource(['property' => 'value']),
+        ];
+
+        $collection = ResourceCollection::new(Resource::class, $data);
+
+        $this->assertCount(4, $collection);
+    }
+
 }

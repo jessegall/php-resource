@@ -50,12 +50,23 @@ class Resource implements \JsonSerializable
     }
 
     /**
-     * Returns a new collection for the resource type
+     * Get a new collection for the resource type
      *
      * @param array $items
      * @return ResourceCollection<static>
      */
-    public static function collection(array &$items = []): ResourceCollection
+    public static function collection(array $items = []): ResourceCollection
+    {
+        return ResourceCollection::new(static::class, $items);
+    }
+
+    /**
+     * Get a new collection with reference for the resource type
+     *
+     * @param array $items
+     * @return ResourceCollection<static>
+     */
+    public static function collectionFromReference(array &$items = []): ResourceCollection
     {
         return ResourceCollection::new(static::class, $items);
     }
@@ -113,7 +124,7 @@ class Resource implements \JsonSerializable
             return null;
         }
 
-        $relation = $asCollection ? $type::collection($data) : $type::createFromReference($data);
+        $relation = $asCollection ? $type::collectionFromReference($data) : $type::createFromReference($data);
 
         $this->setRelation($key, $relation);
 
