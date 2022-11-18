@@ -3,7 +3,6 @@
 namespace JesseGall\Resources;
 
 use JesseGall\ContainsData\ContainsData;
-use JesseGall\ContainsData\ReferenceMissingException;
 
 class Resource implements \JsonSerializable
 {
@@ -117,11 +116,7 @@ class Resource implements \JsonSerializable
             return $this->getRelation($key);
         }
 
-        try {
-            $data = &$this->getAsReference($key);
-        } catch (ReferenceMissingException) {
-            $data = $asCollection ? [] : null;
-        }
+        $data = &$this->getAsReference($key);
 
         if (is_null($data)) {
             return null;
