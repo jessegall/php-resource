@@ -1,7 +1,8 @@
 # php-resource
 
-The Resource class is a simple tool for representing and managing resources in your PHP application. 
-It provides a simple, intuitive interface for storing and accessing data, and for managing relations between resources. With the Resource class, you can easily create rich, interconnected data models for your application, allowing you to quickly build complex and dynamic features.
+A library for representing and managing resources in your PHP application. 
+It provides a simple, intuitive interface for storing and accessing data, and for managing relations between resources. 
+With this library, you can easily create rich, interconnected data models for your application, allowing you to quickly build complex and dynamic features.
 
 ## Installation
 
