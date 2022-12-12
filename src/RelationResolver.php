@@ -18,6 +18,7 @@ class RelationResolver
      *
      * @param Resource $resource
      * @return array
+     * @throws ReflectionException
      */
     public function resolveRelationMethods(Resource $resource): array
     {
@@ -40,6 +41,13 @@ class RelationResolver
         return $resolved;
     }
 
+    /**
+     * Return the relation types
+     *
+     * @param Resource $resource
+     * @return array
+     * @throws ReflectionException
+     */
     public function resolveRelations(Resource $resource): array
     {
         $methods = $this->resolveRelationMethods($resource);
