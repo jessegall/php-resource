@@ -1,13 +1,100 @@
 # php-resource
 
+The Resource class is a simple tool for representing and managing resources in your PHP application. 
+It provides a simple, intuitive interface for storing and accessing data, and for managing relations between resources. With the Resource class, you can easily create rich, interconnected data models for your application, allowing you to quickly build complex and dynamic features.
+
+## Installation
+
 ```
 composer require jessegall/resources
 ```
 
-## What can it do?
+## Usage
 
-The Resource class can be used to create objects that contain data and support relationships with other Resource objects. 
-The Resource class also has methods for creating new Resource objects, creating collections of Resource objects, and defining and accessing relationships with other Resource objects.
+The Resource class can be used to create objects that contain data and support relationships with other Resource objects.
+
+To create a new resource class, extend the Resource class and add any necessary data and methods for your resource.
+To access and modify data in the resource, use the `get` and `set` methods:
+
+```php
+use JesseGall\Resources\Resource;
+
+class Article extends Resource
+{
+
+    public function getTitle(): string 
+    {
+        return $this->get('title');
+    }
+    
+    public function setTitle(string $title)
+    {
+        $this->set('title', $title);
+    }
+    
+    public function getBody(): string
+    {
+        return $this->get('body');
+    }
+    
+    public function setBody(string $body): string
+    {
+        return $this->string('body', $body);
+    }
+
+}
+```
+
+To create a new instance of a resource, you can also use the `new` method:
+
+```php
+$article = new Article([
+    'title' => 'Example Article',
+    'body' => 'Lorem ipsum dolor sit amet...'
+])
+
+// Or
+
+$article = Article::new([
+    'title' => 'Example Article',
+    'body' => 'Lorem ipsum dolor sit amet...'
+]);
+```
+
+To create a collection of resources, use the `collection` method:
+
+```php
+$articles = Article::collection([
+    [
+        'title' => 'Article 1',
+        'body' => 'Lorem ipsum dolor sit amet...'
+    ],
+    [
+        'title' => 'Article 2',
+        'body' => 'Lorem ipsum dolor sit amet...'
+    ]
+]);
+```
+
+To work with relations between resources, use the `relation` method. This method allows you to map data in a resource to another resource or collection of resources:
+
+```php
+class Article extends Resource
+{
+    public function author(): User
+    {
+        return $this->relation('author', User::class);
+    }
+
+   /**
+    * @return ResourceCollection<Comment>
+    */
+    public function comments(): ResourceCollection
+    {
+        return $this->relation('comments', Comment::class, true);
+    }
+}
+```
 
 ## Examples
 Here is an example of how you might use this Resource class to represent orders and products in a RESTful API:
