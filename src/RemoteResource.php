@@ -2,6 +2,9 @@
 
 namespace JesseGall\Resources;
 
+/**
+ * @template T of \JesseGall\Resources\Resource
+ */
 interface RemoteResource
 {
 
@@ -9,7 +12,7 @@ interface RemoteResource
      * Return a collection of all remote resources
      *
      * @param array $params
-     * @return ResourceCollection<static>
+     * @return ResourceCollection<T>
      */
     public static function all(array $params = []): ResourceCollection;
 
