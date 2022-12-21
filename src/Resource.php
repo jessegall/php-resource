@@ -103,6 +103,17 @@ class Resource implements \JsonSerializable
     }
 
     /**
+     * Returns a loaded relation
+     *
+     * @param string $key
+     * @return Resource|ResourceCollection
+     */
+    public function getRelation(string $key): Resource|ResourceCollection
+    {
+        return $this->relations[$key];
+    }
+
+    /**
      * Map the given item(s) to the given resource type
      *
      * @template T of \JesseGall\Resources\Resource
@@ -131,17 +142,6 @@ class Resource implements \JsonSerializable
         $this->setRelation($key, $relation);
 
         return $relation;
-    }
-
-    /**
-     * Returns a loaded relation
-     *
-     * @param string $key
-     * @return Resource|ResourceCollection
-     */
-    public function getRelation(string $key): Resource|ResourceCollection
-    {
-        return $this->relations[$key];
     }
 
     /**

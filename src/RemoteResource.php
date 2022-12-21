@@ -41,12 +41,21 @@ interface RemoteResource
     public function hydrate(): bool;
 
     /**
-     * Sync the local resource with the remote resource.
-     * Return true when successfully synced.
+     * Loads the latest data from the remote source.
+     *
+     * Warning: this will overwrite any local changes
      *
      * @return bool
      */
-    public function sync(): bool;
+    public function refresh(): bool;
+
+    /**
+     * Save the local changes to the remote source.
+     * Return true when successfully saved.
+     *
+     * @return bool
+     */
+    public function save(): bool;
 
     /**
      * Delete the remote resource.
