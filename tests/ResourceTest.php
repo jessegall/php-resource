@@ -11,20 +11,15 @@ use Tests\TestClasses\TestResourceTwo;
 class ResourceTest extends TestCase
 {
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->resource = new TestResource();
-    }
-
     public function test_can_set_value()
     {
-        $this->resource->set('nested.property', 'nested value');
+        $resource = new TestResource();
+
+        $resource->set('nested.property', 'nested value');
 
         $this->assertEquals(
             'nested value',
-            $this->resource->getContainer()['nested']['property']
+            $resource->getContainer()['nested']['property']
         );
     }
 
@@ -42,12 +37,16 @@ class ResourceTest extends TestCase
 
     public function test_map_to_resource_creates_expected_resource()
     {
-        $this->assertInstanceOf(TestResourceTwo::class, $this->resource->getRelationSingle());
+        $resource = new TestResource();
+
+        $this->assertInstanceOf(TestResourceTwo::class, $resource->getRelationSingle());
     }
 
     public function test_map_to_resource_returns_a_collection_of_expected_resources()
     {
-        $actual = $this->resource->getRelationList();
+        $resource = new TestResource();
+
+        $actual = $resource->getRelationList();
 
         $this->assertCount(3, $actual);
 
@@ -58,7 +57,9 @@ class ResourceTest extends TestCase
 
     public function test_map_to_resource_returns_null_when_item_is_null()
     {
-        $this->assertNull($this->resource->getRelationMissing());
+        $resource = new TestResource();
+
+        $this->assertNull($resource->getRelationMissing());
     }
 
     public function test_relation_is_returned_from_loaded_relations_when_relation_is_loaded()
@@ -79,50 +80,60 @@ class ResourceTest extends TestCase
 
     public function test_get_relation_returns_expected_relation()
     {
-        $this->resource->setRelation('relationSingle', $expected = new TestResourceTwo());
+        $resource = new TestResource();
 
-        $this->assertEquals($expected, $this->resource->getRelation('relationSingle'));
+        $resource->setRelation('relationSingle', $expected = new TestResourceTwo());
+
+        $this->assertEquals($expected, $resource->getRelation('relationSingle'));
     }
 
     public function test_setting_value_in_relation_also_affects_the_parent()
     {
-        $relation = $this->resource->getRelationSingle();
+        $resource = new TestResource();
+
+        $relation = $resource->getRelationSingle();
 
         $relation->set('property', $expected = 'new value');
 
-        $this->assertEquals($expected, $this->resource->get('relationSingle.property'));
+        $this->assertEquals($expected, $resource->get('relationSingle.property'));
     }
 
     public function test_setting_value_in_parent_also_affects_the_relation()
     {
-        $relation = $this->resource->getRelationSingle();
+        $resource = new TestResource();
 
-        $this->resource->set('relationSingle.property', $expected = 'new value');
+        $relation = $resource->getRelationSingle();
+
+        $resource->set('relationSingle.property', $expected = 'new value');
 
         $this->assertEquals($expected, $relation->get('property'));
     }
 
     public function test_setting_value_in_relation_collection_also_affects_the_parent()
     {
-        $collection = $this->resource->getRelationList();
+        $resource = new TestResource();
 
-        foreach ($collection as $resource) {
-            $resource->set('property', 'new value');
+        $collection = $resource->getRelationList();
+
+        foreach ($collection as $item) {
+            $item->set('property', 'new value');
         }
 
         $this->assertEquals(
             $collection->toArray(),
-            $this->resource->getContainer()['relationList'],
+            $resource->getContainer()['relationList'],
         );
     }
 
     public function test_is_json_serializable()
     {
-        $serialized = json_encode($this->resource);
+        $resource = new TestResource();
+
+        $serialized = json_encode($resource);
 
         $deserialized = json_decode($serialized, true);
 
-        $this->assertEquals($this->resource->container(), $deserialized);
+        $this->assertEquals($resource->container(), $deserialized);
     }
 
     public function test_given_resource_when_set_then_container_of_resource_is_set()
@@ -186,6 +197,27 @@ class ResourceTest extends TestCase
             ['property' => 'value'],
             ['property' => 'value'],
         ], $actual);
+    }
+
+    public function test__When_clear__Then_resource_cleared()
+    {
+        $resource = new TestResource();
+
+        $resource->clear();
+
+        $this->assertEmpty($resource->container());
+    }
+
+    public function test__When_clear__Then_data_from_loaded_relations_not_cleared()
+    {
+        $resource = new TestResource();
+
+        // Initialize the relation
+        $resource->getRelationSingle();
+
+        $resource->clear();
+
+        $this->assertTrue($resource->has('relationSingle'));
     }
 
 }

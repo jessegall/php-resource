@@ -9,6 +9,7 @@ class Resource implements \JsonSerializable
 {
     use ContainsData {
         ContainsData::set as __set;
+        ContainsData::clear as __clear;
     }
 
     /**
@@ -100,6 +101,20 @@ class Resource implements \JsonSerializable
         }
 
         return $this;
+    }
+
+    /**
+     * Clears the data from the resource except the data from the loaded relations.
+     *
+     * @param array $except
+     * @return void
+     */
+    public function clear(array $except = []): void
+    {
+        $this->__clear([
+            ...array_keys($this->relations),
+            ...$except
+        ]);
     }
 
     /**
