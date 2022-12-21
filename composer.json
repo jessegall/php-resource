@@ -1,5 +1,6 @@
 {
     "name": "jessegall/resources",
+    "description": "A library for representing and managing resources in your PHP application. It provides a simple, intuitive interface for storing and accessing data, and for managing relations between resources.",
     "autoload": {
         "psr-4": {
             "JesseGall\\Resources\\": "src/"
