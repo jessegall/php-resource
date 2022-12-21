@@ -1,4 +1,5 @@
 # php-resource
+[![Build](https://github.com/jessegall/php-resource/actions/workflows/php.yml/badge.svg)](https://github.com/jessegall/php-resource/actions/workflows/php.yml)
 
 A package for representing and managing resources in your PHP application. 
 It provides a simple, intuitive interface for storing and accessing data, and for managing relations between resources. 
