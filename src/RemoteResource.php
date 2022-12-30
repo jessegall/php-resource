@@ -28,9 +28,16 @@ interface RemoteResource
      * Create a remote resource
      *
      * @param array $data
-     * @return static
+     * @return static|null
      */
-    public static function create(array $data = []): static;
+    public static function create(array $data = []): ?static;
+
+    /**
+     * Get the unique id for the resource
+     *
+     * @return string|int|null
+     */
+    public function getId(): string|int|null;
 
     /**
      * Fill the resource with remote data.
@@ -64,5 +71,12 @@ interface RemoteResource
      * @return bool
      */
     public function delete(): bool;
+
+    /**
+     * Check if the resource exists on the remote source.
+     *
+     * @return bool
+     */
+    public function exists(): bool;
 
 }

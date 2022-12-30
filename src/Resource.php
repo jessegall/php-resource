@@ -4,13 +4,22 @@ namespace JesseGall\Resources;
 
 use JesseGall\ContainsData\ContainsData;
 use JesseGall\ContainsData\ReferenceMissingException;
+use JesseGall\Events\Dispatcher;
+use JesseGall\Hooks\HasHooks;
 
 class Resource implements \JsonSerializable
 {
-    use ContainsData {
+    use ContainsData, HasHooks {
         ContainsData::set as __set;
         ContainsData::clear as __clear;
     }
+
+    /**
+     * The event dispatcher instance.
+     *
+     * @var Dispatcher
+     */
+    protected Dispatcher $dispatcher;
 
     /**
      * The loaded relations of the resource
@@ -22,6 +31,20 @@ class Resource implements \JsonSerializable
     public function __construct(array $data = [])
     {
         $this->container($data);
+
+        $this->dispatcher = new Dispatcher();
+
+        $this->initialize();
+    }
+
+    /**
+     * @return void
+     */
+    public function initialize(): void
+    {
+        $this->initializeHooks();
+
+        $this->dispatch(Event::INITIALIZED);
     }
 
     /**
@@ -73,6 +96,30 @@ class Resource implements \JsonSerializable
     }
 
     /**
+     * Register a listener.
+     *
+     * @param Event $event
+     * @param object|string|array $listeners
+     * @return void
+     */
+    public function listen(Event $event, object|string|array $listeners): void
+    {
+        $this->dispatcher->listen($event->value, $listeners);
+    }
+
+    /**
+     * Dispatch an event.
+     *
+     * @param Event $event
+     * @param mixed|null $payload
+     * @return void
+     */
+    public function dispatch(Event $event, mixed $payload = null): void
+    {
+        $this->dispatcher->dispatch($event->value, $payload);
+    }
+
+    /**
      * Overwrites the set method from ContainsData trait.
      * When the given value is a resource, set the container of the resource as data and load the relation
      *
@@ -82,6 +129,10 @@ class Resource implements \JsonSerializable
      */
     public function set(string $key, mixed $value = null): static
     {
+        foreach ($this->listeners['setValue'] ?? [] as $listener) {
+            $value = $listener($key, $value);
+        }
+
         if ($value instanceof Resource) {
             $this->setAsReference($key, $value->container());
 

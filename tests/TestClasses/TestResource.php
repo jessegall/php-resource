@@ -7,7 +7,6 @@ use JesseGall\Resources\ResourceCollection;
 
 class TestResource extends Resource
 {
-
     public function __construct()
     {
         parent::__construct([
