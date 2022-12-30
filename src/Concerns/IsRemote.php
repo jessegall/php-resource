@@ -134,7 +134,7 @@ trait IsRemote
             return false;
         }
 
-        $this->merge($data);
+        $this->merge($data, false);
 
         $this->setExists(true);
 

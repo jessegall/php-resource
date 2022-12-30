@@ -65,17 +65,6 @@ class IsRemoteTest extends TestCase
 
     public function test__When_all__Then_collection_has_correct_type()
     {
-        TestRemoteResource::setApi(new class extends TestApi {
-            public function get(string $resource, $id = null, array $params = []): array
-            {
-                return [
-                    ['id' => 1],
-                    ['id' => 2],
-                    ['id' => 3],
-                ];
-            }
-        });
-
         $collection = TestRemoteResource::all();
 
         $this->assertEquals(TestRemoteResource::class, $collection->getType());
@@ -346,7 +335,7 @@ class IsRemoteTest extends TestCase
         $resource->hydrate();
     }
 
-    public function test__When_hydrate__Then_resource_data_is_merged_with_data_from_api()
+    public function test__When_hydrate__Then_resource_data_is_merged_with_data_from_api_without_overriding_existing_data()
     {
         TestRemoteResource::setApi(new class extends TestApi {
             public function get(string $resource, int|string $id = null, array $params = []): array
@@ -355,17 +344,12 @@ class IsRemoteTest extends TestCase
             }
         });
 
-        $resource = new TestRemoteResource([
-            'id' => 1,
-            'name' => 'Test',
-            'local_property' => 'value'
-        ]);
+        $resource = new TestRemoteResource(['id' => 1, 'name' => 'Test 2']);
 
         $resource->hydrate();
 
         $this->assertEquals(1, $resource->get('id'));
-        $this->assertEquals('Test', $resource->get('name'));
-        $this->assertEquals('value', $resource->get('local_property'));
+        $this->assertEquals('Test 2', $resource->get('name'));
     }
 
     public function test__When_hydrate__Then_resource_exists()
