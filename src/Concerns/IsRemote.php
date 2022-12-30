@@ -117,7 +117,7 @@ trait IsRemote
     }
 
     /**
-     * Fill the resource with remote data.
+     * Fill the resource with remote data without overwriting existing data.
      * Return true when successfully hydrated.
      *
      * @return bool

@@ -21,6 +21,19 @@ class IsRemoteTest extends TestCase
 
     # --- isRemote::count() ---
 
+    public function test__When_count__Then_correct_arguments_are_passed_to_api()
+    {
+        $api = $this->createMock(TestApi::class);
+
+        $api->expects($this->once())
+            ->method('count')
+            ->with(TestRemoteResource::class, ['foo' => 'bar']);
+
+        TestRemoteResource::setApi($api);
+
+        TestRemoteResource::count(['foo' => 'bar']);
+    }
+
     public function test__When_count__Then_correct_count()
     {
         TestRemoteResource::setApi(new class extends TestApi {
@@ -38,7 +51,7 @@ class IsRemoteTest extends TestCase
         TestRemoteResource::setApi(new class extends TestApi {
             public function count(string $resource, array $params = []): int
             {
-                throw new ApiException($resource);
+                throw new ApiException();
             }
         });
 
@@ -89,7 +102,7 @@ class IsRemoteTest extends TestCase
         TestRemoteResource::setApi(new class extends TestApi {
             public function get(string $resource, $id = null, array $params = []): array
             {
-                throw new ApiException($resource);
+                throw new ApiException();
             }
         });
 
@@ -138,7 +151,7 @@ class IsRemoteTest extends TestCase
         TestRemoteResource::setApi(new class extends TestApi {
             public function get(string $resource, $id = null, array $params = []): array
             {
-                throw new ApiException($resource);
+                throw new ApiException();
             }
         });
 
@@ -183,7 +196,7 @@ class IsRemoteTest extends TestCase
         TestRemoteResource::setApi(new class extends TestApi {
             public function create(string $resource, array $data = []): array
             {
-                throw new ApiException($resource);
+                throw new ApiException();
             }
         });
 
@@ -277,7 +290,7 @@ class IsRemoteTest extends TestCase
         TestRemoteResource::setApi(new class extends TestApi {
             public function update(string $resource, $id, array $data = []): array
             {
-                throw new ApiException($resource);
+                throw new ApiException();
             }
         });
 
@@ -306,7 +319,7 @@ class IsRemoteTest extends TestCase
         TestRemoteResource::setApi(new class extends TestApi {
             public function update(string $resource, $id, array $data = []): array
             {
-                throw new ApiException($resource);
+                throw new ApiException();
             }
         });
 
@@ -380,7 +393,7 @@ class IsRemoteTest extends TestCase
         TestRemoteResource::setApi(new class extends TestApi {
             public function get(string $resource, int|string $id = null, array $params = []): array
             {
-                throw new ApiException($resource);
+                throw new ApiException();
             }
         });
 
@@ -466,7 +479,7 @@ class IsRemoteTest extends TestCase
         TestRemoteResource::setApi(new class extends TestApi {
             public function get(string $resource, int|string $id = null, array $params = []): array
             {
-                throw new ApiException($resource);
+                throw new ApiException();
             }
         });
 
@@ -530,7 +543,7 @@ class IsRemoteTest extends TestCase
         TestRemoteResource::setApi(new class extends TestApi {
             public function delete(string $resource, int|string $id = null, array $params = []): void
             {
-                throw new ApiException($resource);
+                throw new ApiException();
             }
         });
 
